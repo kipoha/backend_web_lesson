@@ -21,9 +21,12 @@ def main_view(request):
 
 def products_view(request, category_id):
     if request.method == 'GET':
-        category = Category.objects.get(id=category_id)
-        products = Product.objects.filter(category=category)
-        return render(request, 'products/products.html', context={'products': products})
+        try:
+            category = Category.objects.get(id=category_id)
+            products = Product.objects.filter(category=category)
+            return render(request, 'products/products.html', context={'products': products})
+        except:
+            return render(request, 'error/404.html')
 
 def category_view(request):
     if request.method == 'GET':
@@ -32,5 +35,9 @@ def category_view(request):
 
 def detail_product_view(request, category_id, product_id):
     if request.method == 'GET':
-        product = Product.objects.get(id=product_id)
-        return render(request, 'products/detail_product.html', context={'product': product})
+        try:
+            product = Product.objects.get(id=product_id)
+            return render(request, 'products/detail_product.html', context={'product': product})
+        except:
+            return render(request, 'error/404.html')
+            
