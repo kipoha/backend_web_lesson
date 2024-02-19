@@ -4,19 +4,19 @@
 
 <body>
     <h1 style="text-align: center">
-        Products
+        Category
     </h1>
 
     <div class="card-container">
-        {% for product in products %}
+        {% for category in categories %}
         <div class="card" style="margin-right: 30px;">
             <img src="{{ product.image }}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 style="text-align: center", class="card-title">{{ product.product_name }}</h5>
-                <p style="text-align: center", class="card-text">{{ product.description }}</p>
-                <p style="text-align: center">Created: {{ product.created }}</p>
-                <p style="text-align: center">Updated: {{ product.updated }}</p>
-                <a href="/categories/{{ product.category.id }}/products/{{ product.id }}" class="btn btn-primary">View</a>
+                <h5 style="text-align: center" class="card-title">{{ category.category_name }}</h5>
+                <p style="text-align: center" class="card-text">{{ category.description }}</p>
+                <p style="text-align: center">Created: {{ category.created }}</p>
+                <p style="text-align: center">Updated: {{ category.updated }}</p>
+                <a href="/categories/{{ category.id }}/products" class="btn btn-primary">View</a>
             </div>
         </div>
         {% endfor %}
@@ -34,7 +34,7 @@
         .card {
             background-color: gray;
             margin-bottom: 20px;
-            flex: 0 0 calc(25% - 30px);
+            flex: 0 0 calc(50% - 30px);
         }
     </style>
 </body>
