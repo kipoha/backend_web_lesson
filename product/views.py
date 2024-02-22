@@ -23,9 +23,10 @@ def products_view(request, category_id):
     if request.method == 'GET':
         try:
             category = Category.objects.get(id=category_id)
-            products = Product.objects.filter(category=category)
+            products = Product.objects.filter(category=category).select_related('category')
             return render(request, 'products/products.html', context={'products': products})
-        except:
+        except Exception as e:
+            print(e)
             return render(request, 'error/404.html')
 
 def category_view(request):

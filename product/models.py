@@ -10,7 +10,7 @@ class Category(models.Model):
         return self.category_name
 
 class Product(models.Model):
-    image = models.ImageField(upload_to='product_imgs/%Y/%m/%d', null=True, default=None)
+    image = models.ImageField(upload_to='media/product_imgs/%Y/%m/%d', null=True, default=None, blank=True)
     product_name = models.CharField(max_length=100)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
