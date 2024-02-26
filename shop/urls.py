@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from product.views import products_view, main_view, category_view, detail_product_view
+from product.views import products_view, main_view, category_view, detail_product_view, create_category, create_product, create_review
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,9 +26,12 @@ urlpatterns = [
     # path('current_date/', current_date),
     # path('goodby/', goodby),
     path('', main_view),
-    path('categories/<int:category_id>/products/', products_view),
+    path("categories/<int:category_id>/products/", products_view),
     path("categories/", category_view),
-    path('categories/<int:category_id>/products/<int:product_id>/', detail_product_view),
+    path("categories/<int:category_id>/products/<int:product_id>/", detail_product_view),
+    path("categories/create/", create_category),
+    path("products/create/", create_product),
+    path("categories/<int:category_id>/products/<int:product_id>/review/", create_review)
     ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

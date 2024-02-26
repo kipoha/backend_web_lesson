@@ -10,6 +10,11 @@
                 <p> {{ product.description }} </p>
                 <p> {{ product.updated }} </p>
                 <p>{{ product.created }}</p>
+                <form method="post" action="/categories/{{ product.category.id }}/products/{{ product.id }}/review/">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Create Review</button>
+                </form>
             </div>
         </div>
         <div class="card" style="margin-top: 30px;">
