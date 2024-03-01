@@ -25,6 +25,7 @@ def products_view(request, category_id):
         try:
             category = Category.objects.get(id=category_id)
             products = Product.objects.filter(category=category).select_related('category')
+            products = products.exclude(author=request.user)
             return render(request, 'products/products.html', context={'products': products})
         except Exception as e:
             print(e)
@@ -43,6 +44,21 @@ def detail_product_view(request, category_id, product_id):
             return render(request, 'products/detail_product.html', context={'product': product, 'form': form})
         except:
             return render(request, 'error/404.html')
+
+def create_review(request, category_id, product_id):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if not form.is_valid():
+            return render(
+                request=request,
+                template_name='products/detail_product.html',
+                context={'form': form}
+            )
+        review = form.save(commit=False)
+        review.product_id = product_id
+        review.user = request.user
+        review.save()
+        return redirect(f'/categories/{category_id}/products/{product_id}/')
 
 def create_category(request):
     if request.method == 'GET':
@@ -79,20 +95,8 @@ def create_product(request):
                 template_name='create/create.html',
                 context={"form": form}
         )
-        form.save()
+        product = form.save(commit=False)
+        product.author = request.user
+        product.save()
         category_id = form.cleaned_data['category'].id
         return redirect(f'/categories/{category_id}/products/')
-
-def create_review(request, category_id, product_id):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if not form.is_valid():
-            return render(
-                request=request,
-                template_name='products/detail_product.html',
-                context={'form': form}
-            )
-        review = form.save(commit=False)
-        review.product_id = product_id
-        review.save()
-        return redirect(f'/categories/{category_id}/products/{product_id}/')

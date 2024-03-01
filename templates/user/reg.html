@@ -1,12 +1,11 @@
-{% extends "components/navbar.html" %}
-<html>
+{% extends 'components/navbar.html' %}
+
 {% block content %}
 <div class="card" style="margin-left: 10px; margin-right: 10px; text-align: center">
     <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Create</button>
+    <button type="submit">Register</button>
     </form>
 </div>
-</html>
-{% endblock %}
+{% endblock %} 

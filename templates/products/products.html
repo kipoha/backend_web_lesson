@@ -17,8 +17,9 @@
                 <img src="{% static "empty_image.png" %}" class="card-img-top" alt="...">
             {% endif %}
             <div class="card-body">
-                <h5 style="text-align: center", class="card-title">{{ product.product_name }}</h5>
-                <p style="text-align: center", class="card-text">{{ product.description }}</p>
+                <h5 style="text-align: center", class="card-title">Name: {{ product.product_name }}</h5>
+                <p style="text-align: center", class="card-text">Description: {{ product.description }}</p>
+                <p style="text-align: center", class="card-text">Author: {{ product.author }}</p>
                 <p style="text-align: center">Created: {{ product.created }}</p>
                 <p style="text-align: center">Updated: {{ product.updated }}</p>
                 <a href="/categories/{{ product.category.id }}/products/{{ product.id }}" class="btn btn-primary">View</a>
