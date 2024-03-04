@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import datetime
 from product.models import Product, Category, Review
 from product.forms import CategoryForm, ProductForm, ReviewForm
+from django.db.models import Q
 
 # def hello(request):
 #     return HttpResponse('Hello! Its my project')
@@ -23,10 +24,33 @@ def main_view(request):
 def products_view(request, category_id):
     if request.method == 'GET':
         try:
+            search = request.GET.get('search')
+            sort = request.GET.get('sort')
+            page = request.GET.get('page', 1)
             category = Category.objects.get(id=category_id)
             products = Product.objects.filter(category=category).select_related('category')
             products = products.exclude(author=request.user)
-            return render(request, 'products/products.html', context={'products': products})
+            if search:
+                products = products.filter(
+                    Q(product_name__icontains=search) |
+                    Q(description__icontains=search)
+                )
+            if sort == 'created':
+                order = request.GET.get('order')
+                if order == 'asc':
+                    products = products.order_by('created')
+                else:
+                    products = products.order_by('-created')
+                
+            limit = 3
+            max_pages = products.count() / limit
+            if max_pages % 1 != 0:
+                max_pages = int(max_pages) + 1
+            pages = [i for i in range(1, max_pages + 1)]
+            start = (int(page) - 1) * limit
+            end = start + limit
+            products = products[start:end]
+            return render(request, 'products/products.html', context={'products': products, 'pages': pages})
         except Exception as e:
             print(e)
             return render(request, 'error/404.html')

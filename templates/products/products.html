@@ -4,6 +4,17 @@
 {% block content %}
 
 <body>
+    <form action="" method="get" style="margin-left: 20px; margin-top: 20px;">
+        <input type="text" name="search" placeholder="Search">
+        <input type="submit" value="Search">
+    </form>
+
+    <h4 style="margin-left: 20px;">
+        Sort by
+    </h4>
+
+    <a href="?sort=created&order=asc" class="btn btn-secondary" style="margin-left: 20px;">Newest</a>
+    <a href="?sort=created  &order=desc" class="btn btn-secondary">Oldest</a>
     <h1 style="text-align: center">
         Products
     </h1>
@@ -43,6 +54,16 @@
             flex: 0 0 calc(25% - 30px);
         }
     </style>
+
+    <h4 style="margin-left: 20px;">
+        Pages 
+    </h4>
+    <div style="margin-left: 20px; margin-right: 20px;">
+        {% for page in pages %}
+            <a href="?page={{ page }}" class="btn btn-secondary" style="display: inline-block; margin-right: 5px;">{{ page }}</a>
+        {% endfor %}
+    </div>
+    
 </body>
 </html>
 {% endblock %}
