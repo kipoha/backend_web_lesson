@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.mail import send_mail
 
-from user.forms import RegisterForm, LoginForm, SMSCodeForm
+from user.forms import RegisterForm, LoginForm, SMSCodeForm, ProfileForm
 from user.models import Profile, SMSCode
 import random
 
@@ -35,13 +35,12 @@ def reg_view(request):
             bio=form.cleaned_data['bio']
         )
 
-        code = ''.join([str(random.randint(0, 9)) for _ in range(4)]) # ['1', '2', '3', '4'] -> '1234'
+        code = ''.join([str(random.randint(0, 9)) for _ in range(4)])
 
         SMSCode.objects.create(
             user=user,
             code=code        
         )
-        # TODO: send code to user's email
 
         return redirect('confirm_view')
 
@@ -61,7 +60,7 @@ def confirm_view(request):
         sms_code.user.is_active = True
         sms_code.user.save()
         sms_code.delete()
-        return redirect('main_view')
+        return redirect('/')
 
 def login_view(request):
     if request.method == 'GET':
@@ -71,21 +70,37 @@ def login_view(request):
         form = LoginForm(request.POST)
         if not form.is_valid():
             return render(request, 'user/login.html', {'form': form})
-        user = authenticate(**form.cleaned_data) # User object or None
+        user = authenticate(**form.cleaned_data)
         if not user:
             form.add_error(None, 'Неверный логин или пароль')
-            return render(request, 'user/login.html', 
-                          {'form': form,})
+            return render(request, 'user/login.html', {'form': form,})
         login(request, user)
-        return redirect('main_view')
+        return redirect('/')
 
 @login_required(login_url='/login/')
 def profile_view(request):
     if request.method == 'GET':
+        products = User
         return render(request, 'user/profile.html')
 
 @login_required(login_url='/login/')
 def logout_view(request):
     logout(request)
-    return redirect('main_view')
+    return redirect('/')
 
+@login_required(login_url='/login/')
+def update_profile(request):
+    profile = request.user.profile
+    if request.method == 'GET':
+        form = ProfileForm(instance=profile)
+        return render(request, 'user/update_profile.html', {'form': form})
+    elif request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if not form.is_valid():
+            return render(
+                request=request,
+                template_name='user/update_profile.html',
+                context={"form": form}
+            )
+        form.save()
+        return redirect('/profile/')

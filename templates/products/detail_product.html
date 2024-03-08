@@ -16,6 +16,9 @@
                     <button type="submit">Create Review</button>
                 </form>
             </div>
+            {% if request.user == product.author %}
+            <a href="/categories/{{ product.category.id }}/products/{{ product.id }}/update/" style="margin-left: 15px">Update</a>
+            {% endif %}
         </div>
         <div class="card" style="margin-top: 30px;">
             <div class="card-body">
@@ -32,6 +35,8 @@
                     {% endfor %}
                 </div>
             </div>
+
+
         </div>
     </div>
 </body>

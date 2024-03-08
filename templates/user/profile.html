@@ -1,5 +1,5 @@
 {% extends 'components/navbar.html' %}
-
+{% load static %}
 {% block content %}
 
 <h1 style="text-align: center">
@@ -26,6 +26,43 @@
 
     <p>
         <a href="/logout/">Logout</a>
+        <a href="/profile/update/" style="margin-left: 20px">Update</a>
     </p>
+    <h3 style="text-align: center;">Your Products</h3>
+    <div class="card-container">
+        {% for product in request.user.product.all %}
+        <div class="card" style="margin-right: 30px; background-color: gray;">
+            {% if product.image %}
+                <img src="/media/{{ product.image }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="{% static "empty_image.png" %}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h5 style="text-align: center", class="card-title">Name: {{ product.product_name }}</h5>
+                <p style="text-align: center", class="card-text">Description: {{ product.description }}</p>
+                <p style="text-align: center", class="card-text">Author: {{ product.author }}</p>
+                <p style="text-align: center">Created: {{ product.created }}</p>
+                <p style="text-align: center">Updated: {{ product.updated }}</p>
+                <a href="/categories/{{ product.category.id }}/products/{{ product.id }}" class="btn btn-primary">View</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            flex: 0 0 calc(25% - 30px);
+        }
+    </style>
+
 </div>
 {% endblock %}

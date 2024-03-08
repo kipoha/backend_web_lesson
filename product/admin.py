@@ -18,7 +18,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product_name', 'created', 'category')
+    list_display = ('id', 'product_name', 'created', 'category', 'author')
     list_display_links = ('product_name',)
     list_editable = ('category',)
     inlines = [ReviewInline]

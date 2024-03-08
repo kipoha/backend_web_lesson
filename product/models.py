@@ -24,7 +24,7 @@ class Product(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='author'
+        related_name='product'
     )
     
     def __str__(self):
@@ -43,7 +43,6 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='user'
     )
-    
 
     def __str__(self):
         return f'Review for {self.product.product_name}'

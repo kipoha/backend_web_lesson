@@ -29,7 +29,6 @@ class ProductForm(forms.ModelForm):
             'image': 'Изображение',
         }
 
-
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
