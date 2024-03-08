@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from user.forms import RegisterForm, LoginForm, SMSCodeForm, ProfileForm
 from user.models import Profile, SMSCode
 import random
+from shop import settings
 
 def reg_view(request):
     if request.method == 'GET':
@@ -41,6 +42,8 @@ def reg_view(request):
             user=user,
             code=code        
         )
+
+        send_mail('Verify', f'your code: {code}', settings.EMAIL_HOST_USER, recipient_list=[user.email])
 
         return redirect('confirm_view')
 
